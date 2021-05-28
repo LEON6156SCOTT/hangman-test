@@ -15,7 +15,10 @@ def is_word_guessed(secret_word, letters_guessed):
       return True (if user guess the world correctly )
       return False (wrong selection)
     '''
-    return False
+    for i in secret_word:
+        if i not in letters_guessed:
+            return False
+    return True
 
 # if you want to test this function please call function -> get_guessed_word("kindness", [k, n, d])
 
@@ -50,7 +53,10 @@ def get_available_letters(letters_guessed):
       letters_guessed = ['e', 'a'] then    
       return sting is -> `bcdfghijklmnopqrstuvwxyz`
     '''
+
     letters_left = string.ascii_lowercase
+    for i in letters_guessed:
+        letters_left = letters_left.replace(i, '')
     return letters_left
 
 
@@ -74,24 +80,32 @@ def hangman(secret_word):
         str(len(secret_word))), end='\n\n')
 
     letters_guessed = []
+    life = 8
+    while life:
+        print("Lives left : ", life)
+        available_letters = get_available_letters(letters_guessed)
+        print("Available letters: {} ".format(available_letters))
+        print("=============================================")
+        guess = input("Please guess a letter: ")
+        letter = guess.lower()
 
-    available_letters = get_available_letters(letters_guessed)
-    print("Available letters: {} ".format(available_letters))
+        if letter in letters_guessed:
+            print("\n*************************************************")
+            print("LETTER ALREADY GUESSED!! TRY ANOTHER LETTER!!")
+            print("*************************************************\n")
+        if letter in secret_word:
+            letters_guessed.append(letter)
+            print("Good guess: {} ".format(get_guessed_word(secret_word, letters_guessed)))
+            if is_word_guessed(secret_word, letters_guessed) == True:
+                print(" * * Congratulations, you won! * * ", end='\n\n')
+                break
+        else:
+            life-=1
+            print("Oops! That letter is not in my word: {} ".format(
+                get_guessed_word(secret_word, letters_guessed)))
+            letters_guessed.append(letter)
+            print("")
 
-    guess = input("Please guess a letter: ")
-    letter = guess.lower()
-
-    if letter in secret_word:
-        letters_guessed.append(letter)
-        print("Good guess: {} ".format(
-            get_guessed_word(secret_word, letters_guessed)))
-        if is_word_guessed(secret_word, letters_guessed) == True:
-            print(" * * Congratulations, you won! * * ", end='\n\n')
-    else:
-        print("Oops! That letter is not in my word: {} ".format(
-            get_guessed_word(secret_word, letters_guessed)))
-        letters_guessed.append(letter)
-        print("")
 
 
 # Load the list of words into the variable wordlist
