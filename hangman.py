@@ -105,6 +105,11 @@ def hangman(secret_word):
                 get_guessed_word(secret_word, letters_guessed)))
             letters_guessed.append(letter)
             print("")
+        print(IMAGES[8-life-1])
+
+    if life == 0:
+
+        print("YOU LOSE!! You are Hunged")
 
 
 
